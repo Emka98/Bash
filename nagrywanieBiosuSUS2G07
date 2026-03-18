@@ -1,0 +1,16 @@
+#!/bin/bash
+
+programator=$(ls /dev/ttyUSB*)
+
+echo "Lista dostępnych plków BIOS"
+mapfile -t files < <(ls *.BIN 2>/dev/null)
+
+for i in "${!files[@]}"; do
+	echo "$((i+1)). ${files[$i]}"
+done
+
+read -p "Wprowadz numer wybranego pliku " choice
+
+sudo ./bios_flash "${files[($choice-1)]}" "${files[($choice-1)]}-powgraniu" "$programator"
+
+read -p "Wprowadz dowolny zanak by zakończyć"
